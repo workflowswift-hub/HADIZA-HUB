@@ -44,7 +44,7 @@ function afficherProduit() {
     <div class="infos">
       <div class="eyebrow">${p.categorie} · ${p.genre}</div>
       <h1 class="serif">${p.nom}</h1>
-      <div class="prix">${formaterFCFA(p.prix)}</div>
+      <div class="prix">${formaterFCFA(p.prix)}${p.prixBarre ? ` <span style="color:#7A776E;text-decoration:line-through;font-size:0.7em;margin-left:0.4rem;">${formaterFCFA(p.prixBarre)}</span>` : ""}</div>
       <p class="desc">${p.description || ""}</p>
 
       ${p.variantes?.length ? `

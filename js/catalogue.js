@@ -36,7 +36,7 @@ async function chargerProduits() {
         </div>
         <div class="meta">
           ${p.nom}
-          <div class="p">${formaterFCFA(p.prix)}</div>
+          <div class="p">${formaterFCFA(p.prix)}${p.prixBarre ? ` <span style="color:#7A776E;text-decoration:line-through;font-size:0.78em;">${formaterFCFA(p.prixBarre)}</span>` : ""}</div>
         </div>`;
       grille.appendChild(carte);
     });

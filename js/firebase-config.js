@@ -18,3 +18,9 @@ export const auth = getAuth(app);
 
 // Numéro WhatsApp de la boutique (format international, sans + ni espaces)
 export const WHATSAPP_NUMERO = "2250595453308";
+
+// ⚠️ Config Cloudinary — nécessaire pour l'upload de photos depuis l'admin
+// 1. Va sur cloudinary.com → ton Dashboard → note ton "Cloud name"
+// 2. Settings → Upload → "Add upload preset" → Signing Mode: "Unsigned" → note le nom du preset
+export const CLOUDINARY_CLOUD_NAME = "dma4ja0z";
+export const CLOUDINARY_UPLOAD_PRESET = "Hadiza hub";
