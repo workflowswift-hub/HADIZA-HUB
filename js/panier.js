@@ -69,4 +69,4 @@ export function lienWhatsApp({ adresse = "", telephone = "" } = {}) {
   return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(msg)}`;
 }
 
-document.addEventListener("DOMContentLoaded", majCompteurPanier);
+majCompteurPanier();

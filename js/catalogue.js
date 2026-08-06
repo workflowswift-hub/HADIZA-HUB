@@ -48,4 +48,4 @@ async function chargerProduits() {
 
 filtreCategorie?.addEventListener("change", chargerProduits);
 filtreGenre?.addEventListener("change", chargerProduits);
-document.addEventListener("DOMContentLoaded", chargerProduits);
+chargerProduits();

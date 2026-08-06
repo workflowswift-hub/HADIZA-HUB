@@ -111,4 +111,4 @@ function afficherProduit() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", chargerProduit);
+chargerProduit();

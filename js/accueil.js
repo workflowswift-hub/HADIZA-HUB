@@ -37,4 +37,4 @@ async function chargerNouveautes() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", chargerNouveautes);
+chargerNouveautes();
