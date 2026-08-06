@@ -1,0 +1,25 @@
+{
+  "name": "HADIZA HUB — Montres, chaînes & bagues",
+  "short_name": "HADIZA HUB",
+  "description": "Le hub de vos accessoires préférés — montres, chaînes et bagues à Abidjan.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FAF9F6",
+  "theme_color": "#111112",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

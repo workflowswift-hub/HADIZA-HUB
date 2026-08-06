@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogue — HADIZA HUB</title>
+<meta name="theme-color" content="#111112">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .page-title{text-align:center;padding:2.4rem 4vw 0.5rem;}
+  .page-title h1{font-size:2rem;}
+  .page-title p{color:var(--gris-txt);font-size:0.85rem;margin-top:0.4rem;}
+</style>
+</head>
+<body>
+
+<div class="banniere">🚚 LIVRAISON OFFERTE SUR ABIDJAN — 💵 PAIEMENT À LA LIVRAISON</div>
+
+<header class="site">
+  <a href="index.html"><img src="assets/logo.png" alt="HADIZA HUB"></a>
+  <nav>
+    <a href="catalogue.html?categorie=montres">Montres</a>
+    <a href="catalogue.html?categorie=chaines">Chaînes</a>
+    <a href="catalogue.html?categorie=bagues">Bagues</a>
+    <a href="catalogue.html">Tout voir</a>
+  </nav>
+  <div class="header-icons">
+    <a href="panier.html">🛍️<span id="cart-count" style="display:none;"></span></a>
+  </div>
+</header>
+
+<div class="page-title">
+  <h1 class="serif">Catalogue</h1>
+  <p>Montres, chaînes, bagues — livrées à Abidjan</p>
+</div>
+
+<div class="filtres">
+  <select id="filtre-categorie">
+    <option value="">Toutes les catégories</option>
+    <option value="montres">Montres</option>
+    <option value="chaines">Chaînes</option>
+    <option value="bagues">Bagues</option>
+  </select>
+  <select id="filtre-genre">
+    <option value="">Homme & Femme</option>
+    <option value="homme">Homme</option>
+    <option value="femme">Femme</option>
+    <option value="unisexe">Unisexe</option>
+  </select>
+</div>
+
+<div class="grille-produits" id="grille-produits"></div>
+
+<footer class="site">
+  © 2026 HADIZA HUB — Abidjan <a class="admin-link" href="admin/index.html">·</a>
+</footer>
+
+<a class="wa-sticky" href="https://wa.me/">💬 Commander sur WhatsApp</a>
+
+<script>
+  // Pré-remplit le filtre catégorie si arrivé via ?categorie=xxx
+  const paramsUrl = new URLSearchParams(location.search);
+  if (paramsUrl.get('categorie')) {
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('filtre-categorie').value = paramsUrl.get('categorie');
+    });
+  }
+</script>
+<script type="module" src="js/panier.js"></script>
+<script type="module" src="js/catalogue.js"></script>
+</body>
+</html>

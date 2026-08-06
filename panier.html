@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panier — HADIZA HUB</title>
+<meta name="theme-color" content="#111112">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .contenu{max-width:760px;margin:0 auto;padding:2.4rem 4vw 4rem;}
+  .contenu h1{font-size:1.9rem;margin-bottom:1.6rem;}
+  .ligne{display:flex;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid var(--gris-bord);}
+  .ligne img{width:64px;height:64px;object-fit:cover;background:var(--creme);}
+  .ligne .infos-l{flex:1;font-size:0.88rem;}
+  .ligne .infos-l small{color:var(--gris-txt);display:block;margin-top:0.2rem;}
+  .ligne .prix-l{font-size:0.9rem;color:var(--or);}
+  .ligne .suppr{cursor:pointer;color:var(--gris-txt);font-size:0.85rem;margin-left:0.6rem;}
+  .total-row{display:flex;justify-content:space-between;padding:1.2rem 0;font-size:1.1rem;}
+  .form-livraison{display:grid;gap:0.8rem;margin:1.4rem 0;}
+  .form-livraison input{padding:0.85rem;border:1px solid var(--gris-bord);font-family:inherit;font-size:0.88rem;}
+  #vide{color:var(--gris-txt);font-size:0.9rem;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <a href="index.html"><img src="assets/logo.png" alt="HADIZA HUB"></a>
+  <nav>
+    <a href="catalogue.html">Catalogue</a>
+  </nav>
+  <div class="header-icons">
+    <a href="panier.html">🛍️<span id="cart-count" style="display:none;"></span></a>
+  </div>
+</header>
+
+<div class="contenu">
+  <h1 class="serif">Votre panier</h1>
+  <div id="lignes-panier"></div>
+  <div id="vide" style="display:none;">Votre panier est vide. <a href="catalogue.html" style="color:var(--or);">Voir le catalogue</a></div>
+
+  <div class="total-row" id="total-row" style="display:none;">
+    <span>Total</span><strong id="total-montant"></strong>
+  </div>
+
+  <div class="form-livraison" id="form-livraison" style="display:none;">
+    <input type="text" id="adresse" placeholder="Adresse de livraison (Abidjan)">
+    <input type="tel" id="telephone" placeholder="Numéro de téléphone">
+  </div>
+
+  <a class="btn" id="btn-commander" style="width:100%;display:none;">💬 Commander via WhatsApp</a>
+</div>
+
+<footer class="site">
+  © 2026 HADIZA HUB — Abidjan <a class="admin-link" href="admin/index.html">·</a>
+</footer>
+
+<script type="module">
+  import { lirePanier, retirerDuPanier, totalPanier, formaterFCFA, lienWhatsApp } from "./js/panier.js";
+
+  function afficher() {
+    const panier = lirePanier();
+    const zone = document.getElementById("lignes-panier");
+    const vide = document.getElementById("vide");
+    const totalRow = document.getElementById("total-row");
+    const form = document.getElementById("form-livraison");
+    const btn = document.getElementById("btn-commander");
+
+    if (panier.length === 0) {
+      zone.innerHTML = "";
+      vide.style.display = "block";
+      totalRow.style.display = "none";
+      form.style.display = "none";
+      btn.style.display = "none";
+      return;
+    }
+
+    vide.style.display = "none";
+    totalRow.style.display = "flex";
+    form.style.display = "grid";
+    btn.style.display = "flex";
+
+    zone.innerHTML = panier.map((l, i) => `
+      <div class="ligne">
+        <img src="${l.image || ''}">
+        <div class="infos-l">
+          ${l.nom}${l.variante ? `<small>${l.variante}</small>` : ""}
+          <small>Quantité : ${l.quantite}</small>
+        </div>
+        <div class="prix-l">${formaterFCFA(l.prixUnitaire * l.quantite)}</div>
+        <span class="suppr" data-i="${i}">✕</span>
+      </div>
+    `).join("");
+
+    document.getElementById("total-montant").textContent = formaterFCFA(totalPanier());
+
+    document.querySelectorAll(".suppr").forEach((s) => {
+      s.addEventListener("click", () => {
+        retirerDuPanier(parseInt(s.dataset.i));
+        afficher();
+      });
+    });
+  }
+
+  document.getElementById("btn-commander").addEventListener("click", () => {
+    const adresse = document.getElementById("adresse").value;
+    const telephone = document.getElementById("telephone").value;
+    if (!adresse || !telephone) {
+      alert("Merci de renseigner ton adresse et ton numéro avant de commander.");
+      return;
+    }
+    window.open(lienWhatsApp({ adresse, telephone }), "_blank");
+  });
+
+  document.addEventListener("DOMContentLoaded", afficher);
+</script>
+</body>
+</html>

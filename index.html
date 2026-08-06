@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HADIZA HUB — Montres, chaînes & bagues</title>
+<meta name="theme-color" content="#111112">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .hero{
+    text-align:center;padding:4rem 6vw 3rem;
+    background:linear-gradient(180deg,#FAF9F6,#fff);
+  }
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.15;}
+  .hero h1 em{font-style:normal;color:var(--or);}
+  .hero p{color:var(--gris-txt);max-width:34ch;margin:1rem auto 0;font-size:0.95rem;}
+  .divider{display:flex;align-items:center;justify-content:center;gap:1rem;padding:2rem 0;color:var(--or);}
+  .divider::before,.divider::after{content:"";height:1px;width:60px;background:var(--gris-bord);}
+  .cat-section{padding:1rem 6vw 3.5rem;max-width:1200px;margin:0 auto;}
+  .eyebrow{text-align:center;color:var(--or);letter-spacing:0.2em;font-size:0.72rem;text-transform:uppercase;margin-bottom:0.5rem;}
+  .section-title{text-align:center;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:2.2rem;}
+  .categories{display:grid;grid-template-columns:1fr;gap:1.2rem;}
+  @media(min-width:768px){.categories{grid-template-columns:repeat(3,1fr);}}
+  .cat-card{
+    position:relative;aspect-ratio:3/4;background:var(--creme);
+    border:1px solid var(--gris-bord);display:flex;align-items:flex-end;
+    padding:1.4rem;text-decoration:none;color:var(--noir);
+  }
+  .cat-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;}
+  .cat-name small{display:block;font-family:'Jost',sans-serif;font-size:0.68rem;color:var(--or);letter-spacing:0.12em;margin-top:0.3rem;}
+  .reassurance{display:grid;grid-template-columns:1fr;gap:1.4rem;text-align:center;max-width:1200px;margin:0 auto;padding:0 6vw 4rem;}
+  @media(min-width:768px){.reassurance{grid-template-columns:repeat(3,1fr);}}
+  .reassurance div{padding:1.2rem;border-top:1px solid var(--gris-bord);}
+  .reassurance h3{font-size:1.05rem;margin-bottom:0.3rem;color:var(--noir);}
+  .reassurance p{color:var(--gris-txt);font-size:0.82rem;}
+</style>
+</head>
+<body>
+
+<div class="banniere">🚚 LIVRAISON OFFERTE SUR ABIDJAN — 💬 COMMANDE VIA WHATSAPP — 💵 PAIEMENT À LA LIVRAISON</div>
+
+<header class="site">
+  <a href="index.html"><img src="assets/logo.png" alt="HADIZA HUB"></a>
+  <nav>
+    <a href="catalogue.html?categorie=montres">Montres</a>
+    <a href="catalogue.html?categorie=chaines">Chaînes</a>
+    <a href="catalogue.html?categorie=bagues">Bagues</a>
+    <a href="catalogue.html">Tout voir</a>
+  </nav>
+  <div class="header-icons">
+    <a href="panier.html">🛍️<span id="cart-count" style="display:none;"></span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <h1 class="serif">Le hub de vos <em>accessoires</em> préférés</h1>
+  <p>Montres, chaînes et bagues pensées pour durer — pour homme et femme, livrées à Abidjan.</p>
+  <a href="catalogue.html" class="btn" style="margin-top:1.6rem;">Découvrir la collection</a>
+</section>
+
+<div class="divider"></div>
+
+<section class="cat-section">
+  <div class="eyebrow">La collection</div>
+  <h2 class="section-title serif">Trois univers, une exigence</h2>
+  <div class="categories">
+    <a class="cat-card" href="catalogue.html?categorie=montres">
+      <div class="cat-name">Montres<small>Homme · Femme</small></div>
+    </a>
+    <a class="cat-card" href="catalogue.html?categorie=chaines">
+      <div class="cat-name">Chaînes<small>Acier · Plaqué or</small></div>
+    </a>
+    <a class="cat-card" href="catalogue.html?categorie=bagues">
+      <div class="cat-name">Bagues<small>Toutes tailles</small></div>
+    </a>
+  </div>
+</section>
+
+<section class="reassurance">
+  <div><h3>Livraison offerte</h3><p>Sur toutes les commandes à Abidjan</p></div>
+  <div><h3>Paiement à la livraison</h3><p>Vous payez à réception, en toute confiance</p></div>
+  <div><h3>Commande simple</h3><p>Un message WhatsApp suffit pour commander</p></div>
+</section>
+
+<footer class="site">
+  © 2026 HADIZA HUB — Abidjan <a class="admin-link" href="admin/index.html">·</a>
+</footer>
+
+<a class="wa-sticky" href="https://wa.me/">💬 Commander sur WhatsApp</a>
+
+<script type="module" src="js/panier.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
+}
+</script>
+</body>
+</html>
