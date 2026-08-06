@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion admin — HADIZA HUB</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--creme);}
+  .box{background:#fff;border:1px solid var(--gris-bord);padding:2.4rem;width:90%;max-width:360px;text-align:center;}
+  .box img{height:50px;margin:0 auto 1.4rem;background:var(--noir);padding:6px 12px;}
+  .box input{width:100%;padding:0.85rem;border:1px solid var(--gris-bord);margin-bottom:0.8rem;font-family:inherit;font-size:0.88rem;}
+  .box .btn{width:100%;margin-top:0.4rem;}
+  #erreur{color:#b33;font-size:0.8rem;margin-top:0.6rem;display:none;}
+</style>
+</head>
+<body>
+  <div class="box">
+    <img src="../assets/logo.png" alt="HADIZA HUB">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="mdp" placeholder="Mot de passe">
+    <button class="btn" id="btn-connexion">Se connecter</button>
+    <div id="erreur">Identifiants incorrects.</div>
+  </div>
+
+  <script type="module">
+    import { auth } from "../js/firebase-config.js";
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "dashboard.html";
+    });
+
+    document.getElementById("btn-connexion").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const mdp = document.getElementById("mdp").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, mdp);
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        document.getElementById("erreur").style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

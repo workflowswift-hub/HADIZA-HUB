@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard admin — HADIZA HUB</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  header.site{position:static;}
+  .tabs{display:flex;gap:1.6rem;border-bottom:1px solid var(--gris-bord);padding:0 4vw;font-size:0.85rem;}
+  .tabs div{padding:0.9rem 0;cursor:pointer;color:var(--gris-txt);}
+  .tabs div.active{color:var(--noir);border-bottom:2px solid var(--or);}
+  .panel{padding:1.6rem 4vw;max-width:900px;margin:0 auto;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+  th,td{text-align:left;padding:0.7rem;border-bottom:1px solid var(--gris-bord);}
+  select{padding:0.4rem;border:1px solid var(--gris-bord);font-family:inherit;}
+  .form-produit{display:grid;gap:0.7rem;max-width:420px;margin-bottom:2rem;}
+  .form-produit input,.form-produit select,.form-produit textarea{padding:0.7rem;border:1px solid var(--gris-bord);font-family:inherit;font-size:0.85rem;}
+  .stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.6rem;}
+  .stat-cards div{border:1px solid var(--gris-bord);padding:1rem;text-align:center;}
+  .stat-cards strong{display:block;font-size:1.4rem;color:var(--or);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <img src="../assets/logo.png" alt="HADIZA HUB">
+  <div style="font-size:0.85rem;">Espace admin</div>
+  <button class="btn btn-outline" id="btn-deconnexion" style="padding:0.5rem 1rem;">Déconnexion</button>
+</header>
+
+<div class="tabs">
+  <div class="active" data-panel="apercu">Aperçu</div>
+  <div data-panel="produits">Produits</div>
+  <div data-panel="commandes">Commandes</div>
+</div>
+
+<div class="panel active" id="apercu">
+  <div class="stat-cards">
+    <div><strong id="stat-commandes">–</strong>Commandes en attente</div>
+    <div><strong id="stat-rupture">–</strong>Produits en rupture</div>
+    <div><strong id="stat-total">–</strong>Produits au catalogue</div>
+  </div>
+</div>
+
+<div class="panel" id="produits">
+  <h3 class="serif" style="margin-bottom:1rem;">Ajouter un produit</h3>
+  <div class="form-produit">
+    <input id="p-nom" placeholder="Nom du produit">
+    <select id="p-categorie">
+      <option value="montres">Montres</option>
+      <option value="chaines">Chaînes</option>
+      <option value="bagues">Bagues</option>
+    </select>
+    <select id="p-genre">
+      <option value="homme">Homme</option>
+      <option value="femme">Femme</option>
+      <option value="unisexe">Unisexe</option>
+    </select>
+    <input id="p-prix" type="number" placeholder="Prix (FCFA)">
+    <input id="p-image" placeholder="URL image Cloudinary (photo principale)">
+    <textarea id="p-description" placeholder="Description" rows="3"></textarea>
+    <button class="btn" id="btn-ajouter-produit">Ajouter au catalogue</button>
+  </div>
+
+  <h3 class="serif" style="margin-bottom:0.8rem;">Catalogue actuel</h3>
+  <table id="table-produits">
+    <thead><tr><th>Nom</th><th>Catégorie</th><th>Prix</th><th>Statut</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="panel" id="commandes">
+  <table id="table-commandes">
+    <thead><tr><th>Client</th><th>Total</th><th>Statut</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script type="module">
+  import { auth, db } from "../js/firebase-config.js";
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { collection, addDoc, getDocs, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "index.html";
+    else { chargerProduits(); chargerStats(); }
+  });
+
+  document.getElementById("btn-deconnexion").addEventListener("click", () => signOut(auth));
+
+  document.querySelectorAll(".tabs div").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tabs div").forEach((t) => t.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.panel).classList.add("active");
+    });
+  });
+
+  document.getElementById("btn-ajouter-produit").addEventListener("click", async () => {
+    const nom = document.getElementById("p-nom").value;
+    const prix = parseInt(document.getElementById("p-prix").value);
+    if (!nom || !prix) { alert("Nom et prix obligatoires."); return; }
+
+    await addDoc(collection(db, "products"), {
+      nom,
+      categorie: document.getElementById("p-categorie").value,
+      genre: document.getElementById("p-genre").value,
+      prix,
+      description: document.getElementById("p-description").value,
+      images: [document.getElementById("p-image").value].filter(Boolean),
+      variantes: [],
+      statut: "actif"
+    });
+    alert("Produit ajouté !");
+    document.querySelectorAll(".form-produit input, .form-produit textarea").forEach(i => i.value = "");
+    chargerProduits();
+  });
+
+  async function chargerProduits() {
+    const snap = await getDocs(collection(db, "products"));
+    const tbody = document.querySelector("#table-produits tbody");
+    tbody.innerHTML = "";
+    snap.forEach((d) => {
+      const p = d.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.nom}</td><td>${p.categorie}</td><td>${p.prix.toLocaleString("fr-FR")} FCFA</td>
+        <td>
+          <select data-id="${d.id}" class="select-statut">
+            <option value="actif" ${p.statut==="actif"?"selected":""}>Actif</option>
+            <option value="rupture" ${p.statut==="rupture"?"selected":""}>Rupture</option>
+            <option value="archivé" ${p.statut==="archivé"?"selected":""}>Archivé</option>
+          </select>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll(".select-statut").forEach((s) => {
+      s.addEventListener("change", async () => {
+        await updateDoc(doc(db, "products", s.dataset.id), { statut: s.value });
+      });
+    });
+  }
+
+  async function chargerStats() {
+    const snapProduits = await getDocs(collection(db, "products"));
+    document.getElementById("stat-total").textContent = snapProduits.size;
+    let rupture = 0;
+    snapProduits.forEach((d) => { if (d.data().statut === "rupture") rupture++; });
+    document.getElementById("stat-rupture").textContent = rupture;
+
+    try {
+      const qCmd = query(collection(db, "orders"), where("statutCommande", "==", "en_attente_confirmation"));
+      const snapCmd = await getDocs(qCmd);
+      document.getElementById("stat-commandes").textContent = snapCmd.size;
+    } catch {
+      document.getElementById("stat-commandes").textContent = "0";
+    }
+  }
+</script>
+</body>
+</html>
