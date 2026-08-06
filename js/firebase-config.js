@@ -17,4 +17,4 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // Numéro WhatsApp de la boutique (format international, sans + ni espaces)
-export const WHATSAPP_NUMERO = "225595453308";
+export const WHATSAPP_NUMERO = "2250595453308";
