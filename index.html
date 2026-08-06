@@ -45,10 +45,7 @@
 <header class="site">
   <a href="index.html"><img src="assets/logo.png" alt="HADIZA HUB"></a>
   <nav>
-    <a href="catalogue.html?categorie=montres">Montres</a>
-    <a href="catalogue.html?categorie=chaines">Chaînes</a>
-    <a href="catalogue.html?categorie=bagues">Bagues</a>
-    <a href="catalogue.html">Tout voir</a>
+    <a href="catalogue.html">Catalogue</a>
   </nav>
   <div class="header-icons">
     <a href="panier.html">🛍️<span id="cart-count" style="display:none;"></span></a>
@@ -76,7 +73,22 @@
     <a class="cat-card" href="catalogue.html?categorie=bagues">
       <div class="cat-name">Bagues<small>Toutes tailles</small></div>
     </a>
+    <a class="cat-card" href="catalogue.html?categorie=vetements">
+      <div class="cat-name">Vêtements<small>Homme · Femme</small></div>
+    </a>
+    <a class="cat-card" href="catalogue.html?categorie=chaussures">
+      <div class="cat-name">Chaussures<small>Toutes pointures</small></div>
+    </a>
+    <a class="cat-card" href="catalogue.html?categorie=lunettes">
+      <div class="cat-name">Lunettes<small>Soleil · Vue</small></div>
+    </a>
   </div>
+</section>
+
+<section class="cat-section" id="nouveautes">
+  <div class="eyebrow">Fraîchement arrivé</div>
+  <h2 class="section-title serif">Nouveautés</h2>
+  <div class="grille-produits" id="grille-nouveautes" style="padding:0;"></div>
 </section>
 
 <section class="reassurance">
@@ -92,6 +104,7 @@
 <a class="wa-sticky" href="https://wa.me/2250595453308">💬 Commander sur WhatsApp</a>
 
 <script type="module" src="js/panier.js"></script>
+<script type="module" src="js/accueil.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
