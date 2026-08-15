@@ -7,6 +7,10 @@
   --creme:#FAF9F6;
   --gris-bord:#E7E4DC;
   --gris-txt:#7A776E;
+  --bleu-clair:#DCEEF7;
+  --bleu-clair-bord:#BFE0F0;
+  --orange-prix:#E8702A;
+  --orange-prix-fond:#FCEDE3;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -79,20 +83,91 @@ footer.site{
 
 /* Grille produits (catalogue) */
 .grille-produits{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;
-  padding:2rem 4vw;max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem;
+  padding:2rem 4vw 3rem;max-width:1200px;margin:0 auto;
 }
-@media(min-width:700px){.grille-produits{grid-template-columns:repeat(4,1fr);}}
-.carte-produit{border:1px solid var(--gris-bord);text-decoration:none;color:inherit;}
-.carte-produit .img{aspect-ratio:1/1;background:var(--creme);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.carte-produit .img img{width:100%;height:100%;object-fit:cover;}
-.carte-produit .meta{padding:0.8rem;font-size:0.85rem;}
-.carte-produit .meta .p{color:var(--or);margin-top:0.2rem;}
-.carte-produit .badge-rupture{background:#111;color:#fff;font-size:0.65rem;padding:3px 8px;position:relative;top:8px;left:8px;display:inline-block;}
+@media(min-width:700px){.grille-produits{grid-template-columns:repeat(4,1fr);gap:1.8rem;}}
+
+@keyframes apparition{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.carte-produit{
+  text-decoration:none;color:inherit;
+  background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(17,17,18,0.06);
+  transition:transform .3s ease, box-shadow .3s ease;
+  opacity:0;animation:apparition .5s ease forwards;
+  display:block;
+}
+.carte-produit:hover{
+  transform:translateY(-6px);
+  box-shadow:0 14px 30px rgba(17,17,18,0.14);
+}
+
+.carte-produit .img{
+  aspect-ratio:1/1;background:var(--creme);
+  position:relative;overflow:hidden;
+}
+.carte-produit .img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:opacity .4s ease, transform .5s ease;
+}
+.carte-produit:hover .img img:first-child{transform:scale(1.06);}
+.carte-produit .img .img-hover{
+  position:absolute;inset:0;opacity:0;
+}
+.carte-produit:hover .img .img-hover{opacity:1;}
+
+.badges-produit{
+  position:absolute;top:10px;left:10px;z-index:2;
+  display:flex;flex-direction:column;gap:6px;align-items:flex-start;
+}
+.badge{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.03em;
+  padding:4px 9px;border-radius:20px;color:#fff;
+}
+.badge-rupture{background:rgba(17,17,18,0.85);}
+.badge-promo{background:var(--orange-prix);}
+.badge-nouveau{background:var(--or);}
+
+.carte-produit .meta{padding:0.9rem 1rem 1.1rem;}
+.nom-produit{
+  font-size:0.88rem;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  min-height:2.3em;
+}
+.ligne-prix{display:flex;align-items:baseline;gap:0.5rem;margin-top:0.55rem;flex-wrap:wrap;}
+.ligne-prix .prix{
+  color:var(--orange-prix);font-weight:600;font-size:1.05rem;
+}
+.ligne-prix .prix-barre{
+  color:var(--gris-txt);text-decoration:line-through;font-size:0.78rem;
+}
+
+.etat-vide{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--gris-txt);}
 
 /* Filtres catalogue */
-.filtres{display:flex;gap:0.8rem;flex-wrap:wrap;padding:1.5rem 4vw 0;max-width:1200px;margin:0 auto;}
-.filtres select{padding:0.6rem 0.9rem;border:1px solid var(--gris-bord);font-family:inherit;font-size:0.82rem;background:#fff;}
+.filtres{
+  display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;
+  padding:1.5rem 4vw 0;max-width:1200px;margin:0 auto;
+}
+.filtres select{
+  padding:0.7rem 0.9rem;border:1px solid var(--gris-bord);border-radius:10px;
+  font-family:inherit;font-size:0.82rem;background:#fff;
+}
+.barre-recherche{
+  display:flex;align-items:center;gap:0.6rem;
+  border:1px solid var(--gris-bord);border-radius:10px;
+  padding:0.7rem 1rem;flex:1 1 220px;
+  color:var(--gris-txt);transition:border-color .2s;
+}
+.barre-recherche:focus-within{border-color:var(--or);color:var(--noir);}
+.barre-recherche input{
+  border:none;outline:none;font-family:inherit;font-size:0.85rem;
+  width:100%;background:transparent;color:var(--noir);
+}
 
 /* WhatsApp sticky */
 .wa-sticky{
